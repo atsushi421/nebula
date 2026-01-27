@@ -14,11 +14,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rosdistro:
-          - humble
-        agnocast_enabled:
-          - 0
-          - 1
+        rosdistro: [humble, jazzy]
+        agnocast_enabled: [0, 1]
+        exclude:
+          - rosdistro: jazzy
+            agnocast_enabled: 1  # Agnocast does not yet support Jazzy
     env:
       CCACHE_DIR: /root/.ccache
       CCACHE_SIZE: 1G  # The GitHub cache action allows for 10G but the runners' disk space is limited
@@ -81,7 +81,7 @@ jobs:
         with:
           rosdistro: ${{ matrix.rosdistro }}
           target-packages: ${{ steps.get-self-packages.outputs.self-packages }}
-          build-depends-repos: build_depends.repos
+          build-depends-repos: build_depends-${{ matrix.rosdistro }}.repos
 
       - name: Show ccache stats after build
         run: |
@@ -101,7 +101,7 @@ jobs:
         with:
           rosdistro: ${{ matrix.rosdistro }}
           target-packages: ${{ steps.get-self-packages.outputs.self-packages }}
-          build-depends-repos: build_depends.repos
+          build-depends-repos: build_depends-${{ matrix.rosdistro }}.repos
 
       - name: Upload coverage to CodeCov
         if: ${{ steps.test.outputs.coverage-report-files != '' && matrix.agnocast_enabled == 0 }}
