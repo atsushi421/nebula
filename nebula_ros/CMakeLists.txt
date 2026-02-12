@@ -25,6 +25,7 @@ find_package(nebula_msgs REQUIRED)
 find_package(pandar_msgs REQUIRED)
 find_package(radar_msgs REQUIRED)
 find_package(rclcpp_components REQUIRED)
+find_package(agnocast_components REQUIRED)
 find_package(robosense_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(visualization_msgs REQUIRED)
@@ -91,9 +92,10 @@ if("$ENV{ENABLE_AGNOCAST}")
     add_definitions(-DUSE_AGNOCAST_ENABLED)
 endif()
 
-rclcpp_components_register_node(hesai_ros_wrapper
+agnocast_components_register_node(hesai_ros_wrapper
         PLUGIN "HesaiRosWrapper"
         EXECUTABLE hesai_ros_wrapper_node
+        EXECUTOR CallbackIsolatedAgnocastExecutor
 )
 
 ## Velodyne
@@ -120,9 +122,10 @@ target_link_libraries(velodyne_ros_wrapper PUBLIC
     nebula_hw_interfaces::nebula_hw_interfaces_velodyne
 )
 
-rclcpp_components_register_node(velodyne_ros_wrapper
+agnocast_components_register_node(velodyne_ros_wrapper
         PLUGIN "VelodyneRosWrapper"
         EXECUTABLE velodyne_ros_wrapper_node
+        EXECUTOR CallbackIsolatedAgnocastExecutor
 )
 
 ## Robosense
@@ -150,9 +153,10 @@ target_link_libraries(robosense_ros_wrapper PUBLIC
     nebula_hw_interfaces::nebula_hw_interfaces_robosense
 )
 
-rclcpp_components_register_node(robosense_ros_wrapper
+agnocast_components_register_node(robosense_ros_wrapper
     PLUGIN "RobosenseRosWrapper"
     EXECUTABLE robosense_ros_wrapper_node
+    EXECUTOR CallbackIsolatedAgnocastExecutor
 )
 
 ## Continental
@@ -198,9 +202,10 @@ target_link_libraries(continental_ars548_ros_wrapper PUBLIC
     nebula_hw_interfaces::nebula_hw_interfaces_continental
 )
 
-rclcpp_components_register_node(continental_ars548_ros_wrapper
+agnocast_components_register_node(continental_ars548_ros_wrapper
     PLUGIN "ContinentalARS548RosWrapper"
     EXECUTABLE continental_ars548_ros_wrapper_node
+    EXECUTOR CallbackIsolatedAgnocastExecutor
 )
 
 # SRR520
@@ -240,9 +245,10 @@ target_link_libraries(continental_srr520_ros_wrapper PUBLIC
     nebula_hw_interfaces::nebula_hw_interfaces_continental
 )
 
-rclcpp_components_register_node(continental_srr520_ros_wrapper
+agnocast_components_register_node(continental_srr520_ros_wrapper
     PLUGIN "ContinentalSRR520RosWrapper"
     EXECUTABLE continental_srr520_ros_wrapper_node
+    EXECUTOR CallbackIsolatedAgnocastExecutor
 )
 
 install(TARGETS hesai_ros_wrapper EXPORT export_hesai_ros_wrapper LIBRARY DESTINATION lib)

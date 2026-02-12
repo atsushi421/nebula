@@ -33,6 +33,7 @@
   <depend>radar_msgs</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
+  <depend>agnocast_components</depend>
   <depend>robosense_msgs</depend>
   <depend>sync_tooling_msgs</depend>
   <depend>tf2_ros</depend>
