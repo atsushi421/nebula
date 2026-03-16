@@ -28,6 +28,7 @@
   <depend>nebula_velodyne_hw_interfaces</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
+  <depend>autoware_agnocast_wrapper</depend>
   <depend>velodyne_msgs</depend>
   <depend>yaml-cpp</depend>
 

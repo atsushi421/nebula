@@ -42,9 +42,13 @@ ament_target_dependencies(
   sync_tooling_msgs
   rclcpp_components)
 
-rclcpp_components_register_node(
+find_package(autoware_agnocast_wrapper REQUIRED)
+
+autoware_agnocast_wrapper_register_node(
   continental_ars548_ros_wrapper PLUGIN "ContinentalARS548RosWrapper"
-  EXECUTABLE continental_ars548_ros_wrapper_node)
+  EXECUTABLE continental_ars548_ros_wrapper_node
+  ROS2_EXECUTOR SingleThreadedExecutor
+  AGNOCAST_EXECUTOR CallbackIsolatedAgnocastExecutor)
 
 # SRR520
 add_library(
@@ -81,9 +85,11 @@ ament_target_dependencies(
   visualization_msgs
   rclcpp_components)
 
-rclcpp_components_register_node(
+autoware_agnocast_wrapper_register_node(
   continental_srr520_ros_wrapper PLUGIN "ContinentalSRR520RosWrapper"
-  EXECUTABLE continental_srr520_ros_wrapper_node)
+  EXECUTABLE continental_srr520_ros_wrapper_node
+  ROS2_EXECUTOR SingleThreadedExecutor
+  AGNOCAST_EXECUTOR CallbackIsolatedAgnocastExecutor)
 
 install(
   TARGETS continental_ars548_ros_wrapper
