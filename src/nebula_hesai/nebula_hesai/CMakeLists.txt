@@ -14,6 +14,8 @@ if("$ENV{ENABLE_AGNOCAST}" AND NOT agnocastlib_FOUND)
   message(FATAL_ERROR "agnocastlib is required when Agnocast is enabled")
 endif()
 
+find_package(autoware_agnocast_wrapper REQUIRED)
+
 # Hesai
 add_library(
   hesai_ros_wrapper SHARED
@@ -50,8 +52,10 @@ if("$ENV{ENABLE_AGNOCAST}")
   add_definitions(-DUSE_AGNOCAST_ENABLED)
 endif()
 
-rclcpp_components_register_node(hesai_ros_wrapper PLUGIN "HesaiRosWrapper"
-                                EXECUTABLE hesai_ros_wrapper_node)
+autoware_agnocast_wrapper_register_node(hesai_ros_wrapper PLUGIN "HesaiRosWrapper"
+                                EXECUTABLE hesai_ros_wrapper_node
+                                ROS2_EXECUTOR SingleThreadedExecutor
+                                AGNOCAST_EXECUTOR CallbackIsolatedAgnocastExecutor)
 
 install(
   TARGETS hesai_ros_wrapper

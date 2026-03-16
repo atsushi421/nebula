@@ -26,9 +26,13 @@ target_link_libraries(
 ament_target_dependencies(velodyne_ros_wrapper PUBLIC diagnostic_msgs
                           velodyne_msgs nebula_msgs rclcpp_components)
 
-rclcpp_components_register_node(
+find_package(autoware_agnocast_wrapper REQUIRED)
+
+autoware_agnocast_wrapper_register_node(
   velodyne_ros_wrapper PLUGIN "VelodyneRosWrapper" EXECUTABLE
-  velodyne_ros_wrapper_node)
+  velodyne_ros_wrapper_node
+  ROS2_EXECUTOR SingleThreadedExecutor
+  AGNOCAST_EXECUTOR CallbackIsolatedAgnocastExecutor)
 
 install(
   TARGETS velodyne_ros_wrapper
