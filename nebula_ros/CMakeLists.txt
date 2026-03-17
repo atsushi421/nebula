@@ -33,6 +33,7 @@ find_package(sync_tooling_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(autoware_utils_debug REQUIRED)
 find_package(autoware_internal_debug_msgs REQUIRED)
+find_package(autoware_agnocast_wrapper REQUIRED)
 find_package(agnocastlib)
 
 if("$ENV{ENABLE_AGNOCAST}" AND NOT agnocastlib_FOUND)
@@ -198,9 +199,11 @@ target_link_libraries(continental_ars548_ros_wrapper PUBLIC
     nebula_hw_interfaces::nebula_hw_interfaces_continental
 )
 
-rclcpp_components_register_node(continental_ars548_ros_wrapper
+autoware_agnocast_wrapper_register_node(continental_ars548_ros_wrapper
     PLUGIN "ContinentalARS548RosWrapper"
     EXECUTABLE continental_ars548_ros_wrapper_node
+    ROS2_EXECUTOR SingleThreadedExecutor
+    AGNOCAST_EXECUTOR CallbackIsolatedAgnocastExecutor
 )
 
 # SRR520
