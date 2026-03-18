@@ -4,6 +4,10 @@ project(nebula_continental)
 find_package(autoware_cmake REQUIRED)
 autoware_package()
 
+if("$ENV{ENABLE_AGNOCAST}" AND NOT agnocast_components_FOUND)
+  message(FATAL_ERROR "agnocast_components is required when Agnocast is enabled")
+endif()
+
 # # Continental
 
 # ARS548
@@ -42,9 +46,16 @@ ament_target_dependencies(
   sync_tooling_msgs
   rclcpp_components)
 
-rclcpp_components_register_node(
-  continental_ars548_ros_wrapper PLUGIN "ContinentalARS548RosWrapper"
-  EXECUTABLE continental_ars548_ros_wrapper_node)
+if("$ENV{ENABLE_AGNOCAST}")
+  agnocast_components_register_node(
+    continental_ars548_ros_wrapper PLUGIN "ContinentalARS548RosWrapper"
+    EXECUTABLE continental_ars548_ros_wrapper_node
+    EXECUTOR CallbackIsolatedAgnocastExecutor)
+else()
+  rclcpp_components_register_node(
+    continental_ars548_ros_wrapper PLUGIN "ContinentalARS548RosWrapper"
+    EXECUTABLE continental_ars548_ros_wrapper_node)
+endif()
 
 # SRR520
 add_library(
@@ -189,5 +200,9 @@ ament_export_dependencies(
   tf2_ros
   visualization_msgs
   yaml-cpp)
+
+if("$ENV{ENABLE_AGNOCAST}")
+  ament_export_dependencies(agnocast_components)
+endif()
 
 ament_package()
